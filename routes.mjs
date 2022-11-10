@@ -63,4 +63,13 @@ router.get("/comment/:author/:title",
     BookController.showComments
 )
 
+//υποδέχεται την φόρμα υποβολής νέου σχολίου
+router.post("/doaddcomment",
+    UserController.checkIfAuthenticated, //έλεγξε αν έχει συνδεθεί ο χρήστης,
+    //Validator.validateNewComment,
+    BookController.addComment,
+    BookController.showBookList
+    // BookController.showComments
+)
+
 export { router }

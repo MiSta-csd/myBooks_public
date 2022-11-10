@@ -140,7 +140,7 @@ async function addOrEditComment(book, username, u_comment) {
         if (!username)
             throw new Error("Πρέπει να δοθεί όνομα χρήστη")
 
-        const book_user = await User.findOne({ 
+        const book_user = await BookUser.findOne({ 
             where: {
                 UserName: username,
                 BookTitle: book.title

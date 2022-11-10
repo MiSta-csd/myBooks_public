@@ -45,8 +45,15 @@ async function showComments(req, res, next) {
         for(var i = 0; i < book_users.length; i++) {
             if(book_users[i].UserName == req.session.username) {
                 thisBookUser = book_users[i];
-                book_users.splice(i, 1);
+                book_users.splice(i, 1); // remove this users' comment from array
                 break;
+            }
+        }
+        // Bad code!
+        for(var i = 0; i < book_users.length; i++) {
+            if (!(book_users[i].comment)) {
+                book_users.splice(i, 1); // remove null comments from array
+                i--;
             }
         }
         
@@ -73,7 +80,22 @@ async function showComments(req, res, next) {
 }
 
 const addComment = async (req, res, next) => {
-
+    // console.log(req.body["bookTitle"])
+    // console.log(req.body["bookAuthor"])
+    // console.log(req.body["bookComment"])
+    try {
+        await BookList.addOrEditComment(
+            {
+                "title": req.body["bookTitle"],
+                "author": req.body["bookAuthor"]
+            },
+            req.session.username,
+            req.body["bookComment"]
+        )
+        next() //επόμενο middleware είναι το showBookList ή το showComments
+    } catch (error) {
+        next(error) //αν έγινε σφάλμα, με το next(error) θα κληθεί το middleware με τις παραμέτρους (error, req, res, next)
+    }
 }
 
 export { showBookList, addBook, deleteBook, addComment, showComments }
