@@ -1,4 +1,4 @@
-import { Book, User } from './bookList_seq_pg.mjs'
+import { Book, User, BookUser } from './bookList_seq_pg.mjs'
 import bcrypt from 'bcrypt'
 
 async function addUser(username, password) {
@@ -120,6 +120,53 @@ async function deleteBook(book, username) {
     }
 }
 
+async function loadComments(title) {
+    try {
+        if (!title)
+            throw new Error("Πρέπει να δοθεί το όνομα του βιβλίου")
+
+        const book_users = await BookUser.findAll({ where: { BookTitle: title }, raw: true });
+        if (!book_users)
+            throw new Error("Δεν υπάρχει κατάλληλο ζευγάρι χρήστη-βιβλίου")
+        //console.log(book_users)
+        return book_users 
+    } catch (error) {
+        throw error
+    }
+}
+
+async function addOrEditComment(book, username, u_comment) {
+    try {
+        if (!username)
+            throw new Error("Πρέπει να δοθεί όνομα χρήστη")
+
+        const book_user = await User.findOne({ 
+            where: {
+                UserName: username,
+                BookTitle: book.title
+            } 
+        })
+        if (!book_user)
+            throw new Error("Δεν υπάρχει κατάλληλο ζευγάρι χρήστη-βιβλίου")
+        
+        let u_comment_trim = u_comment.trim(); // clearing whitespaces
+        
+        // This seems superfluous
+        if(!u_comment_trim)
+            u_comment = null
+
+        await BookUser.update({ comment: u_comment }, {
+            where: {
+                UserName: username,
+                BookTitle: book.title
+            }
+        })
+
+    } catch (error) {
+        throw error
+    }
+}
+
 async function findOrAddUser() {
     //στο this.user θα φυλάσσεται το αντικείμενο που αντιπροσωπεύει τον χρήστη στη sequelize
     //αν δεν υπάρχει, τότε το ανακτούμε από τη sequalize
@@ -133,4 +180,5 @@ async function findOrAddUser() {
         }
 }
 
-export { addUser, login, loadBooks, addBook, deleteBook }
+export { addUser, login, loadBooks, addBook, deleteBook, 
+    addOrEditComment, loadComments }

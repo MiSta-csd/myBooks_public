@@ -35,4 +35,4 @@ User.belongsToMany(Book, { through: BookUser })
 
 await sequelize.sync({ alter: true }); // recreate all tables in the database if they don't exist or if they don't match the model, otherwise do nothing
 
-export { User, Book }
+export { User, Book, BookUser }

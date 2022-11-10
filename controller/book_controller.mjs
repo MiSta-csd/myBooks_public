@@ -3,6 +3,7 @@ import * as BookList from '../model/booklist_model.mjs' // version 3 with ORM se
 async function showBookList(req, res, next) {
     try {
         const myBooks = await BookList.loadBooks(req.session.username)
+        // console.log(myBooks)
         res.render("booklist", { books: myBooks })
     } catch (error) {
         next(error)
@@ -34,4 +35,45 @@ const deleteBook = async (req, res, next) => {
         next(error)//αν έγινε σφάλμα, με το next(error) θα κληθεί το middleware με τις παραμέτρους (error, req, res, next)
     }
 }
-export { showBookList, addBook, deleteBook }
+
+async function showComments(req, res, next) {
+    try {
+        const book_users = await BookList.loadComments(req.params.title)
+        //console.log("Ekana loadComments!")
+        var thisBookUser;
+
+        for(var i = 0; i < book_users.length; i++) {
+            if(book_users[i].UserName == req.session.username) {
+                thisBookUser = book_users[i];
+                book_users.splice(i, 1);
+                break;
+            }
+        }
+        
+        if(!thisBookUser){
+            console.log("thisBookUser is null :(");
+            throw new Error("Δεν δούλεψε η λούπα book_users")
+        }
+
+        var book_info_thisUserComment = {
+            title: thisBookUser.BookTitle,
+            author: req.params.author,
+            comment: thisBookUser.comment
+        };
+        
+        //console.log(book_users)
+        
+        res.render("commentform", { 
+            otherComments: book_users, 
+            thisUsersBook: book_info_thisUserComment     
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const addComment = async (req, res, next) => {
+
+}
+
+export { showBookList, addBook, deleteBook, addComment, showComments }

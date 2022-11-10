@@ -55,6 +55,12 @@ router.get("/register", (req, res) => {
 
 router.post("/doregister",
     Validator.validateNewUser,
-    UserController.doRegister)
+    UserController.doRegister
+)
+
+router.get("/comment/:author/:title",
+    //UserController.checkIfAuthenticated,
+    BookController.showComments
+)
 
 export { router }
