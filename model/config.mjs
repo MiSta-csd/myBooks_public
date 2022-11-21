@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-/* const sequelize = new Sequelize(
+/* const sequelize = new Sequelize( // course git code
     {
         host: 'localhost',
         port: 5432,
@@ -16,7 +16,7 @@ import { Sequelize } from 'sequelize';
         }
     }); */
 
-const sequelize = new Sequelize({
+const sequelize = new Sequelize({   // my local creds
     host: 'localhost',
     port: 5432,
     dialect: 'postgres',
