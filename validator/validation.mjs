@@ -11,6 +11,7 @@ const validateLogin = [
             next()
         }
         else {
+            console.log("Mpika sto error sth validatelogin")
             res.render("home", { message: errors.mapped() })
         }
     }

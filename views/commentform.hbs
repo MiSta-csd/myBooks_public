@@ -35,9 +35,10 @@
                     <label for="bookComment" class="col-form-label">Σχόλιο</label>
                 </div>
                 <div class="col-md-10 col-sm-10 position-relative">
-                    <input type="text" class="form-control" id="bookComment" {{#if thisUsersBook.comment}}
+                    {{!-- <input type="text" class="form-control" id="bookComment" {{#if thisUsersBook.comment}}
                         value="{{thisUsersBook.comment}}" {{/if}} name="bookComment"
-                        placeholder="Γράψτε εδώ το σχόλιό σας">
+                        placeholder="Γράψτε εδώ το σχόλιό σας"> --}}
+                    <textarea class="form-control" id="bookComment" name="bookComment" {{#unless thisUsersBook.comment}} placeholder="Γράψτε εδώ το σχόλιό σας" {{/unless}}>{{#if thisUsersBook.comment}}{{thisUsersBook.comment}}{{/if}}</textarea>
                 </div>
             </div>
             {{!-- end of comment block --}}

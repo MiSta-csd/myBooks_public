@@ -3,14 +3,19 @@ import * as BookList from '../model/booklist_model.mjs' // version 3 with ORM se
 const doLogin = async (req, res, next) => {
 
     //έλεγχος εγκυρότητας οκ
-    const user = await BookList.login(req.body.username, req.body.password)
-    if (user) {
-        req.session.username = req.body.username // το username μπαίνει σαν μεταβλητή συνεδρίας
-        res.locals.username = req.session.username //τα μέλη του res.locals είναι απευθείας προσβάσιμα στο template
-        next() //το επόμενο middleware είναι το showBooklist
-    }
-    else {
-        throw new Error("άγνωστο σφάλμα")
+    try {   // added try /catch block
+        const user = await BookList.login(req.body.username, req.body.password)
+        if (user) {
+            req.session.username = req.body.username // το username μπαίνει σαν μεταβλητή συνεδρίας
+            res.locals.username = req.session.username //τα μέλη του res.locals είναι απευθείας προσβάσιμα στο template
+            next() //το επόμενο middleware είναι το showBooklist
+        }
+        else {
+            throw new Error("άγνωστο σφάλμα")
+        }
+    } catch (error) {
+        res.render("home", { newusermessage: error.message }) // error message in login screen
+        //next(error)
     }
 }
 

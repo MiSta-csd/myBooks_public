@@ -26,7 +26,7 @@ router.get("/addbookform", UserController.checkIfAuthenticated, (req, res) => {
 
 //αυτή η διαδρομή υποδέχεται τη φόρμα εισόδου
 router.post("/books",
-    //UserController.checkIfAuthenticated, // Προκαλεί κόλλημα στην αρχική οθόνη login
+    // UserController.checkIfAuthenticated, // Προκαλεί κόλλημα στην αρχική οθόνη login
     Validator.validateLogin,
     UserController.doLogin,
     BookController.showBookList)
