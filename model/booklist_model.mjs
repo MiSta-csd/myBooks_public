@@ -55,6 +55,16 @@ async function loadBooks(username) {
     }
 }
 
+async function loadCatalog() {
+    try {
+        const allBooks = await Book.findAll({ raw: true });
+        console.log(allBooks);
+        return allBooks;
+    } catch (error) {
+        throw error
+    }
+}
+
 async function addBook(newBook, username) {
     try {
         if (!username)
@@ -181,4 +191,4 @@ async function findOrAddUser() {
 }
 
 export { addUser, login, loadBooks, addBook, deleteBook, 
-    addOrEditComment, loadComments }
+    addOrEditComment, loadComments, loadCatalog }

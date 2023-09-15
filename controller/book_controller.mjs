@@ -10,6 +10,16 @@ async function showBookList(req, res, next) {
     }
 }
 
+async function showBookCatalog(req, res, next) {
+    try {
+        const allBooks = await BookList.loadCatalog();
+        // console.log(myBooks)
+        res.render("bookcatalog", { books: allBooks })
+    } catch (error) {
+        next(error)
+    }
+}
+
 const addBook = async (req, res, next) => {
 
     try {
@@ -98,4 +108,4 @@ const addComment = async (req, res, next) => {
     }
 }
 
-export { showBookList, addBook, deleteBook, addComment, showComments }
+export { showBookList, addBook, deleteBook, addComment, showComments, showBookCatalog }
